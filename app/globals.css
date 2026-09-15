@@ -1,0 +1,122 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --navy-950: #040914;
+    --navy-900: #081225;
+    --navy-800: #0d1e3d;
+    --navy-700: #162c55;
+    --gold-300: #f3e5ab;
+    --gold-400: #dfb76c;
+    --gold-500: #c5a059;
+    --gold-600: #a98239;
+    --offwhite: #f8fafc;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    color-scheme: dark;
+  }
+
+  body {
+    background-color: var(--navy-950);
+    color: #f1f5f9;
+    font-family: var(--font-sans), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    overflow-x: hidden;
+  }
+}
+
+/* Custom Gold Gradients & Text Glow */
+.gold-gradient-text {
+  background: linear-gradient(135deg, #FFF0C2 0%, #DFB76C 50%, #A98239 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gold-gradient-bg {
+  background: linear-gradient(135deg, #c5a059 0%, #dfb76c 50%, #a98239 100%);
+}
+
+.gold-gradient-border {
+  border-image: linear-gradient(135deg, #dfb76c, #a98239, #644a17) 1;
+}
+
+.gold-glow {
+  box-shadow: 0 0 25px rgba(223, 183, 108, 0.25);
+}
+
+.gold-glow-lg {
+  box-shadow: 0 0 45px rgba(223, 183, 108, 0.35);
+}
+
+.gold-glow-hover:hover {
+  box-shadow: 0 0 30px rgba(223, 183, 108, 0.4);
+}
+
+/* Glassmorphism */
+.glass-card {
+  background: rgba(13, 30, 61, 0.55);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(223, 183, 108, 0.15);
+}
+
+.glass-card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card-hover:hover {
+  background: rgba(18, 41, 82, 0.75);
+  border-color: rgba(223, 183, 108, 0.4);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.5), 0 0 20px rgba(223, 183, 108, 0.15);
+}
+
+.glass-nav {
+  background: rgba(8, 18, 37, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(223, 183, 108, 0.15);
+}
+
+/* Pattern Backgrounds */
+.bg-grid-pattern {
+  background-image: radial-gradient(rgba(223, 183, 108, 0.08) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.bg-radial-gradient {
+  background: radial-gradient(circle at 50% 0%, rgba(22, 44, 85, 0.7) 0%, rgba(4, 9, 20, 0) 70%);
+}
+
+/* Pulse Animation for WhatsApp Floating */
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 0 16px rgba(37, 211, 102, 0);
+  }
+}
+
+.pulse-whatsapp {
+  animation: pulseGlow 2.5s infinite;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #040914;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #162c55;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #c5a059;
+}

@@ -53,7 +53,7 @@ export default function Home() {
   const [contactSubject, setContactSubject] = useState("Direito Criminal / Urgência");
   const [contactMessage, setContactMessage] = useState("");
 
-  const mainWhatsAppNumber = "5592991827414";
+  const mainWhatsAppNumber = "5592992127414";
   const secondPhoneNumber = "5592984083042";
 
   const defaultWaMessage = encodeURIComponent(
@@ -199,11 +199,11 @@ export default function Home() {
 
           <div className="flex items-center gap-4 text-xs font-medium">
             <a
-              href="tel:5592991827414"
+              href="tel:5592992127414"
               className="flex items-center gap-1.5 text-slate-200 hover:text-[#dfb76c] transition-colors"
             >
               <PhoneCall className="w-3.5 h-3.5 text-[#dfb76c]" />
-              <span>(92) 99182-7414</span>
+              <span>(92) 99212-7414</span>
             </a>
             <span className="text-slate-600">/</span>
             <a
@@ -312,11 +312,11 @@ export default function Home() {
               </a>
 
               <a
-                href="tel:5592991827414"
+                href="tel:5592992127414"
                 className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-semibold text-slate-200 border border-slate-700 bg-slate-900/60 hover:border-[#dfb76c]"
               >
                 <PhoneCall className="w-4 h-4 text-[#dfb76c]" />
-                <span>Ligar: (92) 99182-7414</span>
+                <span>Ligar: (92) 99212-7414</span>
               </a>
             </div>
           </div>
@@ -380,11 +380,11 @@ export default function Home() {
                 </a>
 
                 <a
-                  href="tel:5592991827414"
+                  href="tel:5592992127414"
                   className="w-full sm:w-auto flex items-center justify-center gap-2.5 px-7 py-4 rounded-full font-semibold text-sm text-slate-200 border border-slate-700 bg-[#081225]/70 hover:border-[#dfb76c] hover:text-white hover:bg-[#0d1e3d] transition-all duration-200"
                 >
                   <PhoneCall className="w-4 h-4 text-[#dfb76c]" />
-                  <span>Plantão: (92) 99182-7414</span>
+                  <span>Plantão: (92) 99212-7414</span>
                 </a>
               </div>
 
@@ -420,6 +420,7 @@ export default function Home() {
                       src="/perfil.webp"
                       alt="Dr. Jean Bruno Advogado Criminalista Manaus"
                       fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 420px"
                       className="object-cover object-top hover:scale-105 transition-transform duration-700"
                       priority
                     />
@@ -491,11 +492,11 @@ export default function Home() {
                 <span>Acionar Plantão 24h</span>
               </a>
               <a
-                href="tel:5592991827414"
+                href="tel:5592992127414"
                 className="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-3.5 rounded-full text-xs sm:text-sm font-semibold text-slate-200 border border-slate-600 bg-slate-900/80 hover:border-red-400"
               >
                 <Phone className="w-4 h-4 text-red-400" />
-                <span>(92) 99182-7414</span>
+                <span>(92) 99212-7414</span>
               </a>
             </div>
           </div>
@@ -611,6 +612,7 @@ export default function Home() {
                       src="/oab.webp"
                       alt="Dr. Jean Bruno na Plenária da OAB Amazonas"
                       fill
+                      sizes="(max-width: 768px) 100vw, 300px"
                       className="object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#040914] via-transparent to-transparent opacity-70" />
@@ -629,6 +631,7 @@ export default function Home() {
                       src="/escritorio.webp"
                       alt="Dr. Jean Bruno no Escritório em Manaus"
                       fill
+                      sizes="(max-width: 768px) 100vw, 300px"
                       className="object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#040914] via-transparent to-transparent opacity-70" />
@@ -933,7 +936,7 @@ export default function Home() {
                 {/* Telefones Clicáveis */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <a
-                    href="tel:5592991827414"
+                    href="tel:5592992127414"
                     className="p-4 rounded-2xl glass-card border border-[#dfb76c]/20 hover:border-[#dfb76c]/60 flex items-center gap-3.5 transition-all group"
                   >
                     <div className="w-10 h-10 rounded-xl bg-[#162c55] text-[#dfb76c] flex items-center justify-center shrink-0 group-hover:scale-105">
@@ -941,7 +944,7 @@ export default function Home() {
                     </div>
                     <div>
                       <span className="text-[11px] text-slate-400 uppercase">Telefone / WhatsApp</span>
-                      <p className="text-sm font-bold text-white">(92) 99182-7414</p>
+                      <p className="text-sm font-bold text-white">(92) 99212-7414</p>
                     </div>
                   </a>
 
@@ -1176,7 +1179,7 @@ export default function Home() {
                 Plantão & Contato
               </h4>
               <div className="space-y-2 text-xs text-slate-300">
-                <p>📲 (92) 99182-7414</p>
+                <p>📲 (92) 99212-7414</p>
                 <p>📲 (92) 98408-3042</p>
                 <p>📍 Rua Francisco José Furtado, nº 7, São Francisco, Manaus/AM</p>
                 <a

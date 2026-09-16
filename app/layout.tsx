@@ -57,7 +57,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" className={`${sans.variable} ${cinzel.variable} scroll-smooth`}>
-      <body className="min-h-screen bg-[#040914] text-slate-100 antialiased selection:bg-[#dfb76c] selection:text-[#040914]">
+      <body className="min-h-screen bg-[#FAF8F5] text-[#181B20] antialiased selection:bg-[#DFB76C] selection:text-[#181B20]">
         {children}
       </body>
     </html>

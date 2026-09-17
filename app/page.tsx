@@ -6,14 +6,11 @@ import {
   Scale,
   Shield,
   PhoneCall,
-  Clock,
   MapPin,
   MessageCircle,
   FileText,
   Gavel,
-  ChevronDown,
   CheckCircle2,
-  AlertTriangle,
   ArrowRight,
   Menu,
   X,
@@ -27,9 +24,8 @@ import {
   Phone,
   Star,
   Quote,
-  Building2,
-  CalendarCheck,
-  Check,
+  Clock,
+  Send,
 } from "lucide-react";
 
 // Custom SVG for Instagram
@@ -77,228 +73,147 @@ function GoogleIcon({ className = "w-5 h-5" }: { className?: string }) {
 
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [openFaq, setOpenFaq] = useState<number | null>(0);
-  const [contactName, setContactName] = useState("");
-  const [contactSubject, setContactSubject] = useState("Direito Criminal / Urgência");
-  const [contactMessage, setContactMessage] = useState("");
+  
+  // Form States
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [message, setMessage] = useState("");
 
   const mainWhatsAppNumber = "5592992127414";
   const secondPhoneNumber = "5592984083042";
 
   const defaultWaMessage = encodeURIComponent(
-    "Olá, Dr. Jean Bruno! Acessei o seu site e gostaria de uma consulta jurídica especializada."
+    "Olá, Dr. Jean Bruno! Acessei o site e gostaria de falar diretamente com o advogado."
   );
 
   const emergencyWaMessage = encodeURIComponent(
-    "🚨 URGÊNCIA: Olá, Dr. Jean Bruno! Preciso de atendimento criminal imediato (Flagrante / Audiência de Custódia / Mandado)."
+    "🚨 URGÊNCIA: Olá, Dr. Jean Bruno! Preciso de atendimento imediato em Manaus (Flagrante / Custódia / Tribunal do Júri)."
   );
 
-  const handleCustomFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const fullName = `${firstName} ${lastName}`.trim() || "Cliente";
     const text = encodeURIComponent(
-      `Olá, Dr. Jean Bruno!\n\nMeu nome é *${contactName || "Cliente"}*.\nAssunto: *${contactSubject}*\n\nMensagem: ${contactMessage || "Gostaria de agendar uma consulta."}`
+      `Olá, Dr. Jean Bruno!\n\n*Formulário de Contato do Site:*\n- *Nome:* ${fullName}\n- *E-mail:* ${email || "Não informado"}\n- *Telefone:* ${phone || "Não informado"}\n- *Mensagem:* ${message || "Gostaria de uma orientação jurídica."}`
     );
     window.open(`https://wa.me/${mainWhatsAppNumber}?text=${text}`, "_blank");
   };
 
+  // Menu links matching the exact reference: Sobre, Áreas de Atuação, Contato
   const navLinks = [
-    { name: "Início", href: "#inicio" },
-    { name: "Áreas de Atuação", href: "#atuacao" },
-    { name: "Sobre Dr. Jean", href: "#sobre" },
-    { name: "O Escritório", href: "#escritorio" },
-    { name: "Avaliações", href: "#avaliacoes" },
-    { name: "Diferenciais", href: "#diferenciais" },
-    { name: "Localização", href: "#localizacao" },
-    { name: "Dúvidas", href: "#faq" },
+    { name: "Sobre", href: "#sobre" },
+    { name: "Áreas de Atuação", href: "#areas-de-atuacao" },
+    { name: "Contato", href: "#contato" },
   ];
 
+  // Áreas de Atuação no formato exato do modelo de referência
   const practiceAreas = [
     {
-      icon: Gavel,
       title: "Tribunal do Júri",
-      subtitle: "Defesa combativa perante o Conselho de Sentença",
       description:
-        "Atuação incisiva e oratória estratégica em plenário, defendendo a liberdade e a vida com rigor técnico, análise minuciosa de provas e sustentação oral inabalável.",
-      badge: "Especialidade Primordial",
-      highlight: true,
+        "Defesa combativa e estratégica perante o Conselho de Sentença, com análise minuciosa de laudos, oratória incisiva em plenário e proteção inabalável da vida e da liberdade.",
+      tags: "Plenário do Júri • Sustentação Oral • Desqualificação • Habeas Corpus",
+      icon: Gavel,
     },
     {
-      icon: FileText,
       title: "Execução Penal & Progressão",
-      subtitle: "Garantia de direitos e liberdade no tempo correto",
       description:
-        "Cálculos detalhados de pena, pedidos de progressão de regime (fechado, semiaberto e aberto), livramento condicional, remição de pena por trabalho/estudo e indulto.",
-      badge: "Execução Penal",
-      highlight: false,
+        "Cálculos detalhados de pena para assegurar a liberdade no tempo exato da lei, com pedidos de progressão de regime, livramento condicional, remições e indultos.",
+      tags: "Progressão de Regime • Livramento Condicional • Remição de Pena • Indulto",
+      icon: FileText,
     },
     {
-      icon: AlertTriangle,
       title: "Flagrante & Custódia",
-      subtitle: "Plantão e acompanhamento imediato 24h",
       description:
-        "Presença imediata na delegacia e na Audiência de Custódia para combater abusos, pleitear relaxamento de prisão ilegal ou liberdade provisória com ou sem fiança.",
-      badge: "Plantão 24h",
-      highlight: true,
-    },
-    {
+        "Acompanhamento presencial 24 horas em delegacias e audiências de custódia, atuando de imediato para coibir abusos e pleitear o relaxamento ou liberdade provisória.",
+      tags: "Plantão 24h • Relaxamento de Prisão • Liberdade Provisória • Fiança",
       icon: Shield,
+    },
+    {
       title: "Defesa Criminal Estratégica",
-      subtitle: "Inquéritos, Ações Penais e Habeas Corpus",
       description:
-        "Acompanhamento preventivo em investigações da Polícia Civil e Federal, resposta à acusação, recursos para o TJAM, STJ e STF, e anulação de provas ilícitas.",
-      badge: "Defesa Penal",
-      highlight: false,
-    },
-    {
+        "Atuação técnica desde o inquérito policial até instâncias superiores (TJAM, STJ e STF), elaborando defesas robustas, trancamento de ações penais e recursos.",
+      tags: "Inquérito Policial • Recursos TJAM/STJ/STF • Trancamento de Ação • Defesa Prévia",
       icon: Scale,
-      title: "Direito Cível Estratégico",
-      subtitle: "Proteção de interesses e resolução de conflitos",
-      description:
-        "Atuação em ações indenizatórias, responsabilidade civil, revisão e elaboração contratual, cobranças, litígios possessórios e defesa de direitos patrimoniais.",
-      badge: "Seara Cível",
-      highlight: false,
     },
     {
-      icon: Briefcase,
-      title: "Consultoria & Pareceres",
-      subtitle: "Segurança jurídica preventiva para pessoas e empresas",
+      title: "Direito Cível & Indenizações",
       description:
-        "Orientação prévia para mitigação de riscos criminais e cíveis, confecção de pareceres técnicos e assessoria estratégica personalizada.",
-      badge: "Consultivo",
-      highlight: false,
+        "Defesa patrimonial e contratual com foco em ações indenizatórias, responsabilidade civil, danos morais e materiais, cobranças judiciais e revisão de contratos.",
+      tags: "Danos Morais • Responsabilidade Civil • Cobranças • Revisão Contratual",
+      icon: Briefcase,
+    },
+    {
+      title: "Consultoria & Pareceres",
+      description:
+        "Orientação jurídica consultiva e preventiva personalizada para indivíduos e empresas, mitigando riscos processuais e garantindo total conformidade legal.",
+      tags: "Consultoria Preventiva • Pareceres Técnicos • Mitigação de Riscos • Acordos",
+      icon: Award,
     },
   ];
 
-  const personalAttributes = [
-    { label: "Advogado Criminalista", detail: "Atuação combatente e técnica", icon: Gavel },
-    { label: "33 Anos de Idade", detail: "Energia, vigor & dedicação", icon: Sparkles },
-    { label: "Casado & Pai de Meninos", detail: "Valores humanos e familiares", icon: Heart },
-    { label: "Espírita", detail: "Ética, respeito e humanismo", icon: Compass },
-    { label: "Criador de Conteúdo", detail: "Direito claro e sem juridiquês", icon: InstagramIcon },
-    { label: "OAB/AM 17.710", detail: "Inscrição ativa na Seccional Amazonas", icon: Award },
-  ];
-
-  // Google Reviews anexadas
+  // Depoimentos dos clientes
   const clientReviews = [
     {
+      quote:
+        "O Dr. Jean Bruno transformou uma situação extremamente delicada em uma vitória completa. Um advogado ético, presente e com técnica impecável em plenário.",
       name: "Mariza Sá",
-      details: "7 avaliações",
-      time: "5 meses atrás",
-      rating: 5,
-      avatarColor: "bg-[#7E57C2]",
-      avatarInitial: "M",
-      hasPhoto: true,
-      text: "Atendimento humanizado, ambiente agradável, excelência no serviço prestado. Um advogado que pode ser recomendado sem receio nenhum! Parabéns pela excelência!",
+      role: "Avaliação Verificada — Atendimento Presencial",
+      initial: "M",
+      color: "bg-[#7E57C2]",
     },
     {
+      quote:
+        "Excelente profissional, muito atencioso e comprometido com o cliente. Explica tudo com clareza sem juridiquês e transmite total confiança. Recomendo de olhos fechados!",
       name: "Joyce Marques",
-      details: "3 avaliações",
-      time: "10 meses atrás",
-      rating: 5,
-      avatarColor: "bg-[#0288D1]",
-      avatarInitial: "J",
-      hasPhoto: false,
-      text: "Excelente profissional, muito atencioso e comprometido com o cliente. Explica tudo com clareza e transmite confiança. Recomendo! Contrate sem medo...",
+      role: "Avaliação Verificada — Acompanhamento Processual",
+      initial: "J",
+      color: "bg-[#0288D1]",
     },
     {
+      quote:
+        "Passando para agradecer por toda a dedicação e disponibilidade durante um momento de urgência na nossa família. Super recomendo o Dr. Jean!",
       name: "Rose Carvalho",
-      details: "2 avaliações · 1 foto",
-      time: "3 meses atrás",
-      rating: 5,
-      avatarColor: "bg-[#5D4037]",
-      avatarInitial: "R",
-      hasPhoto: true,
-      text: "Passando pra agradecer por toda atenção e disponibilidade , muito obrigada Dr JEAN BRUNO. 👏🏾👏🏾👏🏾👏🏾👏🏾super recomendo pessoal ! 🙋🏾‍♀️🫶🏾🙏🏾",
+      role: "Avaliação Verificada — Plantão Criminal",
+      initial: "R",
+      color: "bg-[#5D4037]",
     },
     {
+      quote:
+        "Ótimo atendimento, muito prestativo e transparente. Demonstrou conhecimento profundo da lei e resolveu nossa demanda com muita agilidade. Nota 10!",
       name: "Wanderson Balzary",
-      details: "1 avaliação",
-      time: "um mês atrás",
-      rating: 5,
-      avatarColor: "bg-[#00897B]",
-      avatarInitial: "W",
-      hasPhoto: false,
-      text: "Ótimo atendimento, muito prestativo. Recomendo nota 10!",
+      role: "Avaliação Verificada — Direito Estratégico",
+      initial: "W",
+      color: "bg-[#00897B]",
     },
   ];
 
-  const faqs = [
-    {
-      question: "Um familiar ou conhecido foi detido agora. Qual a primeira providência?",
-      answer:
-        "O primeiro passo fundamental é orientar a pessoa a não prestar depoimento sem a presença de um advogado e exercer o direito constitucional de permanecer em silêncio. Entre em contato imediatamente pelo nosso WhatsApp ou plantão telefônico para que seja feito o acompanhamento presencial na delegacia ou na Audiência de Custódia.",
-    },
-    {
-      question: "Como funciona o atendimento e o cálculo de Progressão de Regime?",
-      answer:
-        "A progressão ocorre quando o apenado atinge o tempo exigido por lei (lapso temporal objetivo) e ostenta bom comportamento carcerário. Realizamos o cálculo minucioso de pena, verificação de remições por trabalho ou estudo e protocolo imediato perante a Vara de Execuções Penais de Manaus.",
-    },
-    {
-      question: "O Dr. Jean Bruno atende apenas em Manaus ou também no interior e outros estados?",
-      answer:
-        "Nosso escritório físico fica situado em Manaus/AM (Rua Francisco José Furtado, nº 7, São Francisco). Atuamos presencialmente na capital, no interior do Amazonas e também realizamos consultorias e sustentações em Tribunais Superiores (STJ e STF em Brasília).",
-    },
-    {
-      question: "Como funciona a primeira consulta e o orçamento?",
-      answer:
-        "O primeiro contato pode ser feito via WhatsApp ou ligação telefônica. Analisamos preliminarmente a demanda com absoluto sigilo profissional e agendamos a consulta (presencial no escritório ou online) com clareza e transparência.",
-    },
-    {
-      question: "O escritório também atua em causas Cíveis?",
-      answer:
-        "Sim. Além da sólida atuação criminal e em plenário do júri, o Dr. Jean Bruno atua estrategicamente na esfera Cível em ações indenizatórias, cobranças, contratos e litígios patrimoniais.",
-    },
+  const tickerItems = [
+    "DIREITO CRIMINAL",
+    "TRIBUNAL DO JÚRI",
+    "EXECUÇÃO PENAL",
+    "CONSULTORIA PROATIVA",
+    "ATENDIMENTO HUMANIZADO",
+    "DEFESA DE DIREITOS",
+    "DIREITO CÍVEL",
+    "MANAUS / AM",
   ];
 
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-[#181B20] selection:bg-[#DFB76C] selection:text-[#181B20]">
+      
       {/* =========================================================================
-          TOP BANNER DE PLANTÃO & URGÊNCIAS (MINIMALISTA E ELEGANTE)
-      ========================================================================= */}
-      <div className="bg-[#F4EFEA] border-b border-[#DFB76C]/30 text-xs py-2 px-4 text-[#272B33]">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left">
-          <div className="flex items-center gap-2 justify-center">
-            <span className="relative flex h-2.5 w-2.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-500 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#C5A059]"></span>
-            </span>
-            <span className="text-[#A98239] font-bold tracking-wide uppercase text-[11px] sm:text-xs">
-              Plantão Criminal 24h & Urgências
-            </span>
-            <span className="hidden md:inline text-stone-400">•</span>
-            <span className="hidden md:inline text-stone-600 font-medium">
-              Flagrantes • Audiência de Custódia • Tribunal do Júri • Manaus/AM
-            </span>
-          </div>
-
-          <div className="flex items-center gap-3 sm:gap-4 text-xs font-semibold">
-            <a
-              href="tel:5592992127414"
-              className="flex items-center gap-1.5 text-stone-800 hover:text-[#C5A059] transition-colors"
-            >
-              <PhoneCall className="w-3.5 h-3.5 text-[#C5A059]" />
-              <span>(92) 99212-7414</span>
-            </a>
-            <span className="text-stone-300">/</span>
-            <a
-              href="tel:5592984083042"
-              className="flex items-center gap-1.5 text-stone-800 hover:text-[#C5A059] transition-colors"
-            >
-              <span>(92) 98408-3042</span>
-            </a>
-          </div>
-        </div>
-      </div>
-
-      {/* =========================================================================
-          NAVBAR PRINCIPAL (TRANSLÚCIDA, LEVE E MINIMALISTA)
+          1. HEADER / NAVBAR (ESTILO REVOREDO & ASSOCIADOS)
       ========================================================================= */}
       <header className="sticky top-0 z-50 glass-nav-light transition-all duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
-            {/* LOGO */}
+            
+            {/* LOGO & IDENTIDADE INSTITUCIONAL */}
             <a href="#inicio" className="flex items-center gap-3.5 group">
-              <div className="relative w-12 h-12 rounded-full p-0.5 bg-gradient-to-tr from-[#DFB76C] via-[#F3E5AB] to-[#C5A059] shadow-sm group-hover:scale-105 transition-transform duration-300">
+              <div className="relative w-11 h-11 sm:w-12 sm:h-12 rounded-full p-0.5 bg-gradient-to-tr from-[#DFB76C] via-[#F3E5AB] to-[#C5A059] shadow-sm group-hover:scale-105 transition-transform duration-300">
                 <div className="w-full h-full rounded-full overflow-hidden bg-white flex items-center justify-center">
                   <Image
                     src="/logo.webp"
@@ -320,36 +235,36 @@ export default function Home() {
               </div>
             </a>
 
-            {/* DESKTOP MENU */}
-            <nav className="hidden lg:flex items-center gap-6 xl:gap-7">
+            {/* MENU LINKS (SOBRE, ÁREAS DE ATUAÇÃO, CONTATO) */}
+            <nav className="hidden md:flex items-center gap-8">
               {navLinks.map((link) => (
                 <a
                   key={link.name}
                   href={link.href}
-                  className="text-sm font-medium text-stone-700 hover:text-[#A98239] transition-colors relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-[#C5A059] hover:after:w-full after:transition-all after:duration-300"
+                  className="text-sm font-semibold text-stone-700 hover:text-[#A98239] transition-colors relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-[#C5A059] hover:after:w-full after:transition-all after:duration-300"
                 >
                   {link.name}
                 </a>
               ))}
             </nav>
 
-            {/* DESKTOP CTA BUTTON */}
+            {/* BOTÃO CTA DO HEADER: "Fale agora com Advogado" */}
             <div className="hidden sm:flex items-center gap-3">
               <a
-                href={`https://wa.me/${mainWhatsAppNumber}?text=${emergencyWaMessage}`}
+                href={`https://wa.me/${mainWhatsAppNumber}?text=${defaultWaMessage}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider gold-btn-gradient text-white shadow-md shadow-[#C5A059]/25 hover:shadow-lg hover:shadow-[#C5A059]/40 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
+                className="flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider gold-btn-gradient text-white shadow-md shadow-[#C5A059]/25 hover:shadow-lg hover:shadow-[#C5A059]/40 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
               >
                 <MessageCircle className="w-4 h-4 fill-current" />
-                <span>Atendimento Direto</span>
+                <span>Fale agora com Advogado</span>
               </a>
             </div>
 
-            {/* MOBILE MENU BUTTON */}
+            {/* MOBILE MENU TOGGLE */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-lg text-stone-700 hover:text-stone-900 hover:bg-stone-200/60 focus:outline-none"
+              className="md:hidden p-2 rounded-lg text-stone-700 hover:text-stone-900 hover:bg-stone-200/60 focus:outline-none"
               aria-label="Abrir Menu"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -359,7 +274,7 @@ export default function Home() {
 
         {/* MOBILE MENU DROPDOWN */}
         {mobileMenuOpen && (
-          <div className="lg:hidden bg-[#FAF8F5]/98 border-b border-[#DFB76C]/30 px-6 py-6 space-y-4 animate-in fade-in slide-in-from-top-4 duration-200 shadow-xl backdrop-blur-xl">
+          <div className="md:hidden bg-[#FAF8F5]/98 border-b border-[#DFB76C]/30 px-6 py-6 space-y-4 shadow-xl backdrop-blur-xl animate-in fade-in slide-in-from-top-4 duration-200">
             <div className="flex flex-col space-y-2.5">
               {navLinks.map((link) => (
                 <a
@@ -375,14 +290,14 @@ export default function Home() {
 
             <div className="pt-2 flex flex-col gap-3">
               <a
-                href={`https://wa.me/${mainWhatsAppNumber}?text=${emergencyWaMessage}`}
+                href={`https://wa.me/${mainWhatsAppNumber}?text=${defaultWaMessage}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setMobileMenuOpen(false)}
                 className="w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl text-sm font-bold uppercase tracking-wider gold-btn-gradient text-white shadow-md"
               >
                 <MessageCircle className="w-5 h-5 fill-current" />
-                <span>Falar no WhatsApp Agora</span>
+                <span>Fale agora com Advogado</span>
               </a>
 
               <a
@@ -398,10 +313,11 @@ export default function Home() {
       </header>
 
       {/* =========================================================================
-          HERO SECTION (CORES LEVES, HUMANIZADA, PALETA DO ESCRITÓRIO)
+          2. HERO SECTION
+          "A proteção que o seu trabalho exige. A Justiça que o direito Garante."
       ========================================================================= */}
-      <section id="inicio" className="relative pt-10 pb-16 lg:pt-16 lg:pb-24 overflow-hidden bg-sand-pattern">
-        {/* Soft Warm Auras */}
+      <section id="inicio" className="relative pt-12 pb-20 lg:pt-20 lg:pb-28 overflow-hidden bg-sand-pattern border-b border-[#DFB76C]/25">
+        {/* Soft Background Warm Lighting */}
         <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[700px] h-[500px] bg-[#DFB76C]/15 rounded-full blur-[130px] pointer-events-none -z-10" />
         <div className="absolute top-1/3 right-10 w-[350px] h-[350px] bg-[#F3E5AB]/40 rounded-full blur-[100px] pointer-events-none -z-10" />
 
@@ -411,38 +327,27 @@ export default function Home() {
             {/* HERO TEXT (COL 1-7) */}
             <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
               
-              {/* OAB & LOCALIZAÇÃO BADGE */}
-              <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/90 border border-[#DFB76C]/40 text-xs sm:text-sm font-semibold text-[#7E5F20] shadow-sm">
+              {/* OAB & Credenciais */}
+              <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/95 border border-[#DFB76C]/40 text-xs sm:text-sm font-semibold text-[#7E5F20] shadow-sm">
                 <Scale className="w-4 h-4 text-[#C5A059]" />
-                <span>OAB/AM 17.710 • Manaus / Amazonas</span>
+                <span>OAB/AM nº 17.710 • Manaus / Amazonas</span>
               </div>
 
-              {/* MAIN TITLE */}
+              {/* TÍTULO PRINCIPAL */}
               <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[#181B20] leading-[1.18]">
-                Advocacia Humanizada & Defesa Técnica da{" "}
+                A proteção que a sua liberdade exige.{" "}
                 <span className="gold-gradient-text block mt-1 sm:inline">
-                  Sua Liberdade
+                  A Justiça que o Direito Garante.
                 </span>
               </h1>
 
-              {/* SUBTITLE */}
+              {/* SUBTÍTULO */}
               <p className="text-base sm:text-lg lg:text-xl text-stone-600 leading-relaxed font-light max-w-2xl mx-auto lg:mx-0">
-                Atuação combativa e próxima em <strong className="font-semibold text-stone-900">Direito Criminal</strong>,{" "}
-                <strong className="font-semibold text-[#A98239]">Tribunal do Júri</strong>,{" "}
-                <strong className="font-semibold text-stone-900">Execução Penal</strong> e resolução estratégica na seara{" "}
-                <strong className="font-semibold text-stone-900">Cível</strong>.
+                Advocacia especializada em direito criminal e cível com consultoria estratégica e atendimento humanizado.
               </p>
 
-              {/* QUOTE CARD MINIMALISTA */}
-              <div className="p-4 sm:p-5 rounded-2xl glass-card-light border-l-4 border-l-[#C5A059] text-stone-700 text-sm sm:text-base italic max-w-2xl mx-auto lg:mx-0 shadow-sm">
-                &ldquo;Sou advogado e milito na seara CRIMINAL e CÍVEL, caso tenha algum problema com a justiça me ligue.&rdquo;
-                <div className="mt-2 text-xs font-serif font-bold text-[#A98239] not-italic uppercase tracking-wider">
-                  — Dr. Jean Bruno
-                </div>
-              </div>
-
-              {/* HERO ACTION BUTTONS */}
-              <div className="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+              {/* BOTAO HERO PRINCIPAL: "Fale agora com Advogado" */}
+              <div className="pt-3 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
                 <a
                   href={`https://wa.me/${mainWhatsAppNumber}?text=${defaultWaMessage}`}
                   target="_blank"
@@ -450,7 +355,7 @@ export default function Home() {
                   className="w-full sm:w-auto flex items-center justify-center gap-3 px-8 py-4 rounded-full font-bold text-sm uppercase tracking-wider gold-btn-gradient text-white shadow-lg shadow-[#C5A059]/30 hover:shadow-xl hover:shadow-[#C5A059]/45 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
                 >
                   <MessageCircle className="w-5 h-5 fill-current" />
-                  <span>Falar com Dr. Jean Bruno</span>
+                  <span>Fale agora com Advogado</span>
                 </a>
 
                 <a
@@ -463,14 +368,14 @@ export default function Home() {
               </div>
 
               {/* TRUST METRICS */}
-              <div className="pt-4 grid grid-cols-3 gap-3 max-w-lg mx-auto lg:mx-0 border-t border-stone-200">
+              <div className="pt-6 grid grid-cols-3 gap-3 max-w-lg mx-auto lg:mx-0 border-t border-stone-200">
                 <div className="text-center lg:text-left">
-                  <div className="text-lg sm:text-xl font-bold font-serif text-[#A98239]">24 Horas</div>
-                  <div className="text-[11px] text-stone-500 font-medium">Plantão de Urgência</div>
+                  <div className="text-lg sm:text-xl font-bold font-serif text-[#A98239]">Plantão 24h</div>
+                  <div className="text-[11px] text-stone-500 font-medium">Urgências Criminais</div>
                 </div>
                 <div className="text-center lg:text-left border-x border-stone-200 px-2">
                   <div className="text-lg sm:text-xl font-bold font-serif text-[#A98239]">100% Sigilo</div>
-                  <div className="text-[11px] text-stone-500 font-medium">Ética e Discrição</div>
+                  <div className="text-[11px] text-stone-500 font-medium">Ética & Discrição</div>
                 </div>
                 <div className="text-center lg:text-left">
                   <div className="text-lg sm:text-xl font-bold font-serif text-[#A98239]">Nota 5.0 ★</div>
@@ -483,26 +388,21 @@ export default function Home() {
             {/* HERO IMAGE (COL 8-12) */}
             <div className="lg:col-span-5 flex justify-center">
               <div className="relative w-full max-w-[380px] sm:max-w-[420px] lg:max-w-none">
-                
-                {/* Background Warm Aura */}
                 <div className="absolute inset-0 rounded-3xl bg-gradient-to-tr from-[#DFB76C]/30 via-[#F3E5AB]/40 to-[#C5A059]/20 blur-2xl transform scale-105" />
 
-                {/* Main Card Frame */}
                 <div className="relative rounded-3xl p-3 bg-gradient-to-b from-white via-[#F4EFEA] to-[#EFE6DC] border border-[#DFB76C]/40 shadow-xl">
                   <div className="relative rounded-[20px] overflow-hidden bg-stone-100 aspect-[4/5]">
                     <Image
                       src="/perfil.webp"
-                      alt="Dr. Jean Bruno Advogado Criminalista Manaus"
+                      alt="Dr. Jean Bruno Advogado Manaus"
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 420px"
                       className="object-cover object-top hover:scale-105 transition-transform duration-700"
                       priority
                     />
 
-                    {/* Gradient Overlay for Text Readability */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80" />
 
-                    {/* Floating Info Tag inside Image */}
                     <div className="absolute bottom-4 left-4 right-4 p-3.5 rounded-xl bg-white/95 backdrop-blur-md border border-[#DFB76C]/40 shadow-lg">
                       <div className="flex items-center justify-between">
                         <div>
@@ -517,7 +417,6 @@ export default function Home() {
                   </div>
                 </div>
 
-                {/* Floating Badge (Side) */}
                 <div className="hidden sm:flex absolute -bottom-4 -left-4 p-3.5 rounded-2xl bg-white border border-[#DFB76C]/40 items-center gap-3 shadow-lg">
                   <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#F4EFEA] to-[#EFE6DC] border border-[#DFB76C]/40 flex items-center justify-center text-[#A98239]">
                     <Shield className="w-5 h-5" />
@@ -536,111 +435,63 @@ export default function Home() {
       </section>
 
       {/* =========================================================================
-          EMERGENCY CTA STRIP (FLAGRANTE / CUSTÓDIA)
+          3. ÁREAS DE ATUAÇÃO EM ADVOCACIA ESPECIALIZADA (ESTILO REVOREDO)
+          Cards com título, parágrafo, divisor '_______' e marcadores com '•'
       ========================================================================= */}
-      <section className="relative py-8 bg-gradient-to-r from-[#F4EFEA] via-[#EFE6DC] to-[#F4EFEA] border-y border-[#DFB76C]/40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
-            <div className="flex items-center gap-4">
-              <div className="w-13 h-13 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center shrink-0 text-amber-700">
-                <AlertTriangle className="w-6 h-6 animate-pulse text-[#A98239]" />
-              </div>
-              <div>
-                <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#181B20]">
-                  Precisa de Atendimento Criminal Urgente em Manaus?
-                </h3>
-                <p className="text-sm text-stone-600">
-                  Prisão em flagrante, mandados de busca e apreensão ou audiência de custódia iminente.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
-              <a
-                href={`https://wa.me/${mainWhatsAppNumber}?text=${emergencyWaMessage}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3.5 rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider bg-rose-700 hover:bg-rose-800 text-white shadow-md shadow-rose-700/20 transition-all duration-200"
-              >
-                <MessageCircle className="w-4 h-4 fill-current" />
-                <span>Acionar Plantão 24h</span>
-              </a>
-              <a
-                href="tel:5592992127414"
-                className="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-3.5 rounded-full text-xs sm:text-sm font-semibold text-stone-800 border border-stone-300 bg-white hover:border-[#C5A059]"
-              >
-                <Phone className="w-4 h-4 text-[#A98239]" />
-                <span>(92) 99212-7414</span>
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================================================
-          ÁREAS DE ATUAÇÃO ESTRATÉGICA
-      ========================================================================= */}
-      <section id="atuacao" className="py-20 lg:py-28 relative">
+      <section id="areas-de-atuacao" className="py-20 lg:py-28 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          {/* Header da Seção */}
           <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-[#DFB76C]/40 text-xs font-semibold text-[#7E5F20] shadow-sm">
-              <Scale className="w-3.5 h-3.5 text-[#C5A059]" />
-              <span>Especialidades Jurídicas</span>
-            </div>
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#181B20]">
-              Áreas de Atuação Estratégica
+              Áreas de Atuação em Advocacia Especializada
             </h2>
             <p className="text-stone-600 text-sm sm:text-base leading-relaxed">
-              Atuação técnica e humanizada, garantindo a proteção intransigente das suas garantias constitucionais, da sua liberdade e do seu patrimônio.
+              Atuação técnica, estratégica e humanizada na defesa intransigente dos seus direitos e da sua liberdade.
             </p>
           </div>
 
-          {/* Grid de Cards Minimalistas */}
+          {/* Grid de Cards no formato exato */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {practiceAreas.map((area, index) => {
-              const IconComponent = area.icon;
+              const IconComp = area.icon;
               return (
                 <div
                   key={index}
-                  className={`relative rounded-3xl p-7 flex flex-col justify-between glass-card-light glass-card-light-hover ${
-                    area.highlight ? "border-[#C5A059]/60 bg-gradient-to-b from-white to-[#FAF4E6]" : ""
-                  }`}
+                  className="rounded-3xl p-7 flex flex-col justify-between glass-card-light glass-card-light-hover border border-[#DFB76C]/30 transition-all duration-300"
                 >
-                  {/* Top Badge */}
                   <div>
-                    <div className="flex items-center justify-between mb-6">
-                      <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#F4EFEA] to-[#EFE6DC] border border-[#DFB76C]/40 flex items-center justify-center text-[#A98239] shadow-sm">
-                        <IconComponent className="w-7 h-7" />
-                      </div>
-                      <span className="text-[11px] font-semibold tracking-wider uppercase px-3 py-1 rounded-full bg-[#FAF4E6] text-[#7E5F20] border border-[#DFB76C]/30">
-                        {area.badge}
-                      </span>
+                    <div className="w-13 h-13 rounded-2xl bg-gradient-to-br from-[#F4EFEA] to-[#EFE6DC] border border-[#DFB76C]/40 flex items-center justify-center text-[#A98239] shadow-sm mb-5">
+                      <IconComp className="w-6 h-6" />
                     </div>
 
-                    <h3 className="font-serif text-xl font-bold text-[#181B20] mb-2">
+                    <h3 className="font-serif text-xl font-bold text-[#181B20] mb-3">
                       {area.title}
                     </h3>
-                    <p className="text-xs font-semibold text-[#A98239] mb-3">
-                      {area.subtitle}
-                    </p>
                     <p className="text-sm text-stone-600 leading-relaxed font-light">
                       {area.description}
                     </p>
+
+                    {/* Divisor característico */}
+                    <div className="my-5 text-stone-300 text-center font-serif select-none">
+                      _______________________________
+                    </div>
+
+                    {/* Tags / Sub-itens com separador • */}
+                    <p className="text-xs font-medium text-[#7E5F20] leading-relaxed">
+                      {area.tags}
+                    </p>
                   </div>
 
-                  {/* Botão de contato direto da área */}
-                  <div className="pt-6 mt-6 border-t border-stone-200">
+                  <div className="pt-6 mt-6 border-t border-stone-200/80">
                     <a
                       href={`https://wa.me/${mainWhatsAppNumber}?text=${encodeURIComponent(
-                        `Olá, Dr. Jean Bruno! Gostaria de uma consulta sobre *${area.title}*.`
+                        `Olá, Dr. Jean Bruno! Gostaria de uma consulta especializada sobre *${area.title}*.`
                       )}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 text-xs font-semibold text-[#A98239] hover:text-[#181B20] transition-colors group"
+                      className="inline-flex items-center gap-2 text-xs font-bold text-[#A98239] hover:text-[#181B20] transition-colors group uppercase tracking-wider"
                     >
-                      <span>Consultar sobre {area.title}</span>
+                      <span>Consultar sobre esta área</span>
                       <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </a>
                   </div>
@@ -649,7 +500,6 @@ export default function Home() {
             })}
           </div>
 
-          {/* Botão Central de Contato */}
           <div className="mt-14 text-center">
             <a
               href={`https://wa.me/${mainWhatsAppNumber}?text=${defaultWaMessage}`}
@@ -666,17 +516,61 @@ export default function Home() {
       </section>
 
       {/* =========================================================================
-          QUEM SOU EU / SOBRE O DR. JEAN BRUNO (HUMANIZADO)
+          4. ATENDIMENTO HUMANIZADO (CALLOUT + BOTÃO + TEXT MARQUEE)
       ========================================================================= */}
-      <section id="sobre" className="py-20 lg:py-28 bg-[#F5EFEB] relative border-y border-[#DFB76C]/30">
+      <section className="py-20 bg-gradient-to-b from-[#F5EFEB] via-[#FAF8F5] to-[#F5EFEB] border-y border-[#DFB76C]/30 relative overflow-hidden">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-[#DFB76C]/40 text-xs font-semibold text-[#7E5F20] shadow-sm">
+            <Heart className="w-3.5 h-3.5 text-[#C5A059]" />
+            <span>Nossa Filosofia</span>
+          </div>
+
+          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#181B20]">
+            Atendimento humanizado
+          </h2>
+
+          <p className="text-stone-600 text-base sm:text-lg max-w-3xl mx-auto leading-relaxed font-light">
+            Atendimento presencial e online focado na resolução de conflitos com o máximo respeito e empatia, priorizando a tranquilidade e a dignidade dos clientes.
+          </p>
+
+          <div className="pt-2">
+            <a
+              href={`https://wa.me/${mainWhatsAppNumber}?text=${encodeURIComponent(
+                "Olá, Dr. Jean Bruno! Gostaria de agendar uma consulta jurídica."
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2.5 px-8 py-4 rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider gold-btn-gradient text-white shadow-lg hover:scale-105 transition-transform"
+            >
+              <MessageCircle className="w-4 h-4 fill-current" />
+              <span>Agende uma Consulta</span>
+            </a>
+          </div>
+        </div>
+
+        {/* TEXT MARQUEE INFINITO */}
+        <div className="mt-14 py-4 bg-[#FAF4E6] border-y border-[#DFB76C]/40 overflow-hidden">
+          <div className="animate-marquee-infinite flex items-center whitespace-nowrap">
+            {[...tickerItems, ...tickerItems, ...tickerItems].map((item, idx) => (
+              <span key={idx} className="flex items-center text-xs sm:text-sm font-bold tracking-widest text-[#7E5F20] uppercase px-4">
+                <span>{item}</span>
+                <span className="ml-8 text-[#C5A059]">•</span>
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          5. SOBRE O ADVOGADO (BIO + EXPERIÊNCIA E EXPERTISE COM 4 ITENS)
+      ========================================================================= */}
+      <section id="sobre" className="py-20 lg:py-28 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
             
             {/* IMAGENS DO DR. JEAN (COL 1-6) */}
             <div className="lg:col-span-6 space-y-6">
-              
-              {/* Card com Foto OAB e Escritório */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 
                 {/* Foto OAB Amazonas */}
@@ -684,7 +578,7 @@ export default function Home() {
                   <div className="relative aspect-[3/4] rounded-xl overflow-hidden bg-stone-100">
                     <Image
                       src="/oab.webp"
-                      alt="Dr. Jean Bruno na Plenária da OAB Amazonas"
+                      alt="Dr. Jean Bruno na OAB Amazonas"
                       fill
                       sizes="(max-width: 768px) 100vw, 300px"
                       className="object-cover group-hover:scale-105 transition-transform duration-500"
@@ -719,7 +613,7 @@ export default function Home() {
 
               </div>
 
-              {/* Box de Resumo da Banca */}
+              {/* Sede Card */}
               <div className="p-5 rounded-2xl bg-white border border-[#DFB76C]/30 flex items-center justify-between gap-4 shadow-sm">
                 <div className="flex items-center gap-3.5">
                   <div className="w-12 h-12 rounded-full overflow-hidden bg-[#FAF8F5] border border-[#DFB76C] p-0.5 shrink-0">
@@ -746,15 +640,14 @@ export default function Home() {
                   <InstagramIcon className="w-5 h-5" />
                 </a>
               </div>
-
             </div>
 
-            {/* TEXTO BIOGRÁFICO / QUEM SOU EU (COL 7-12) */}
+            {/* TEXTO BIOGRÁFICO & BLOCO DE EXPERIÊNCIA (COL 7-12) */}
             <div className="lg:col-span-6 space-y-6">
               
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-[#DFB76C]/40 text-xs font-semibold text-[#7E5F20] shadow-sm">
                 <Users className="w-3.5 h-3.5 text-[#C5A059]" />
-                <span>Quem Sou Eu?</span>
+                <span>Sobre o Advogado</span>
               </div>
 
               <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#181B20] leading-tight">
@@ -765,34 +658,45 @@ export default function Home() {
               </h2>
 
               <p className="text-stone-700 text-sm sm:text-base leading-relaxed font-light">
-                Com inscrição ativa na <strong className="text-[#181B20] font-semibold">OAB/AM sob o nº 17.710</strong>, atuo com foco rigoroso nas áreas <strong className="text-[#7E5F20] font-semibold">Criminal</strong> e <strong className="text-[#181B20] font-semibold">Cível</strong>, oferecendo uma advocacia presente, dinâmica e comprometida com a justiça real.
+                O Advogado Dr. Jean Bruno inscrito na OAB/AM nº 17.710, atuante em Direito Criminal e Cível com uma trajetória marcada pela excelência e pelo compromisso ético. Com atuação no mercado jurídico de Manaus, dedica-se a oferecer uma consultoria estratégica e um atendimento humanizado, garantindo que cada cliente receba a atenção e o suporte jurídico que merece.
               </p>
 
-              <p className="text-stone-700 text-sm sm:text-base leading-relaxed font-light">
-                Acredito que a defesa da liberdade e a busca pelos direitos de cada cliente exigem não apenas conhecimento aprofundado das leis e da jurisprudência, mas também sensibilidade humana, disponibilidade integral e coragem diante dos tribunais.
-              </p>
+              {/* BLOCO: EXPERIÊNCIA E EXPERTISE */}
+              <div className="p-6 rounded-2xl bg-white border border-[#DFB76C]/35 shadow-sm space-y-4">
+                <h3 className="font-serif font-bold text-xl text-[#181B20]">
+                  Experiência e Expertise
+                </h3>
 
-              {/* Grid de Atributos Humanizados */}
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
-                {personalAttributes.map((attr, i) => {
-                  const Icon = attr.icon;
-                  return (
-                    <div
-                      key={i}
-                      className="p-3.5 rounded-xl bg-white border border-[#DFB76C]/30 hover:border-[#C5A059] transition-colors shadow-sm"
-                    >
-                      <div className="flex items-center gap-2 text-[#A98239] mb-1">
-                        <Icon className="w-4 h-4" />
-                        <span className="text-xs font-bold text-[#181B20]">{attr.label}</span>
-                      </div>
-                      <p className="text-[11px] text-stone-500">{attr.detail}</p>
+                <ul className="space-y-3">
+                  <li className="flex items-center gap-3 text-sm font-semibold text-stone-800">
+                    <div className="w-6 h-6 rounded-full bg-[#FAF4E6] border border-[#DFB76C] text-[#A98239] flex items-center justify-center shrink-0">
+                      <CheckCircle2 className="w-4 h-4" />
                     </div>
-                  );
-                })}
+                    <span>Competência na Atuação</span>
+                  </li>
+                  <li className="flex items-center gap-3 text-sm font-semibold text-stone-800">
+                    <div className="w-6 h-6 rounded-full bg-[#FAF4E6] border border-[#DFB76C] text-[#A98239] flex items-center justify-center shrink-0">
+                      <CheckCircle2 className="w-4 h-4" />
+                    </div>
+                    <span>Consultoria Proativa</span>
+                  </li>
+                  <li className="flex items-center gap-3 text-sm font-semibold text-stone-800">
+                    <div className="w-6 h-6 rounded-full bg-[#FAF4E6] border border-[#DFB76C] text-[#A98239] flex items-center justify-center shrink-0">
+                      <CheckCircle2 className="w-4 h-4" />
+                    </div>
+                    <span>Atendimento Humanizado</span>
+                  </li>
+                  <li className="flex items-center gap-3 text-sm font-semibold text-stone-800">
+                    <div className="w-6 h-6 rounded-full bg-[#FAF4E6] border border-[#DFB76C] text-[#A98239] flex items-center justify-center shrink-0">
+                      <CheckCircle2 className="w-4 h-4" />
+                    </div>
+                    <span>Defesa Incondicional de Direitos e Liberdade</span>
+                  </li>
+                </ul>
               </div>
 
-              {/* CTA Social & Contato */}
-              <div className="pt-4 flex flex-wrap items-center gap-4">
+              {/* CTA */}
+              <div className="pt-2 flex flex-wrap items-center gap-4">
                 <a
                   href={`https://wa.me/${mainWhatsAppNumber}?text=${defaultWaMessage}`}
                   target="_blank"
@@ -800,7 +704,7 @@ export default function Home() {
                   className="flex items-center gap-2.5 px-6 py-3.5 rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider gold-btn-gradient text-white hover:scale-105 transition-transform shadow-md"
                 >
                   <MessageCircle className="w-4 h-4 fill-current" />
-                  <span>Agendar Consulta Pessoal</span>
+                  <span>Agendar Consulta com Dr. Jean</span>
                 </a>
 
                 <a
@@ -822,179 +726,56 @@ export default function Home() {
       </section>
 
       {/* =========================================================================
-          O ESCRITÓRIO & ATENDIMENTO PRESENCIAL (ESCRITORIO2.WEBP EM DESTAQUE)
+          6. O QUE DIZEM OS CLIENTES (TESTIMONIALS SECTION)
       ========================================================================= */}
-      <section id="escritorio" className="py-20 lg:py-28 relative bg-sand-pattern">
+      <section className="py-20 lg:py-28 bg-[#F5EFEB] border-y border-[#DFB76C]/30 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-[#DFB76C]/40 text-xs font-semibold text-[#7E5F20] shadow-sm">
-              <Building2 className="w-3.5 h-3.5 text-[#C5A059]" />
-              <span>Ambiente & Estrutura</span>
-            </div>
-            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#181B20]">
-              Atendimento Humanizado & Conforto
-            </h2>
-            <p className="text-stone-600 text-sm sm:text-base leading-relaxed">
-              Um ambiente projetado para acolher você e sua família com total discrição, privacidade e atenção dedicada a cada detalhe do seu caso.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-            
-            {/* Imagem Principal da Mesa de Atendimento (escritorio2.webp) */}
-            <div className="lg:col-span-7">
-              <div className="relative rounded-3xl p-3 bg-white border border-[#DFB76C]/40 shadow-xl overflow-hidden group">
-                <div className="relative aspect-[16/10] rounded-2xl overflow-hidden bg-stone-100">
-                  <Image
-                    src="/escritorio2.webp"
-                    alt="Dr. Jean Bruno atendendo clientes em seu escritório em Manaus"
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 700px"
-                    className="object-cover group-hover:scale-103 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-75" />
-                  
-                  <div className="absolute bottom-4 left-4 right-4 p-4 rounded-xl bg-white/95 backdrop-blur-md border border-[#DFB76C]/40 shadow-md">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                      <div>
-                        <h4 className="font-serif font-bold text-[#181B20] text-sm sm:text-base">
-                          Mesa de Consultas e Atendimento Direto
-                        </h4>
-                        <p className="text-xs text-stone-500">
-                          Reuniões estratégicas com sigilo profissional e atenção individualizada.
-                        </p>
-                      </div>
-                      <span className="inline-flex items-center gap-1 text-[11px] font-bold text-[#7E5F20] bg-[#FAF4E6] px-3 py-1 rounded-full border border-[#DFB76C]/30 shrink-0">
-                        <Check className="w-3.5 h-3.5 text-[#C5A059]" /> Presencial & Online
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Destaques do Atendimento Presencial */}
-            <div className="lg:col-span-5 space-y-6">
-              
-              <div className="space-y-4">
-                <div className="p-5 rounded-2xl glass-card-light border border-[#DFB76C]/30 shadow-sm flex items-start gap-4">
-                  <div className="w-11 h-11 rounded-xl bg-[#FAF4E6] border border-[#DFB76C]/40 text-[#A98239] flex items-center justify-center shrink-0">
-                    <Shield className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="font-serif font-bold text-[#181B20] text-base">Sigilo Absoluto</h4>
-                    <p className="text-xs sm:text-sm text-stone-600 font-light mt-1">
-                      Sala de reuniões privativa para tratar de estratégias de defesa criminal e cível com total tranquilidade.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="p-5 rounded-2xl glass-card-light border border-[#DFB76C]/30 shadow-sm flex items-start gap-4">
-                  <div className="w-11 h-11 rounded-xl bg-[#FAF4E6] border border-[#DFB76C]/40 text-[#A98239] flex items-center justify-center shrink-0">
-                    <CalendarCheck className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="font-serif font-bold text-[#181B20] text-base">Atendimento com Horário Marcado</h4>
-                    <p className="text-xs sm:text-sm text-stone-600 font-light mt-1">
-                      Agilidade e respeito ao seu tempo, garantindo dedicação exclusiva durante toda a sua consulta.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="p-5 rounded-2xl glass-card-light border border-[#DFB76C]/30 shadow-sm flex items-start gap-4">
-                  <div className="w-11 h-11 rounded-xl bg-[#FAF4E6] border border-[#DFB76C]/40 text-[#A98239] flex items-center justify-center shrink-0">
-                    <MapPin className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="font-serif font-bold text-[#181B20] text-base">Localização Acessível em Manaus</h4>
-                    <p className="text-xs sm:text-sm text-stone-600 font-light mt-1">
-                      Bairro São Francisco, com facilidade de acesso a fóruns, tribunais e órgãos policiais da capital.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="pt-2">
-                <a
-                  href={`https://wa.me/${mainWhatsAppNumber}?text=${encodeURIComponent(
-                    "Olá, Dr. Jean Bruno! Gostaria de agendar uma visita/consulta presencial no seu escritório."
-                  )}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider gold-btn-gradient text-white shadow-md hover:scale-[1.02] transition-transform"
-                >
-                  <MessageCircle className="w-4 h-4 fill-current" />
-                  <span>Agendar Consulta no Escritório</span>
-                </a>
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-      </section>
-
-      {/* =========================================================================
-          AVALIAÇÕES REAIS DOS CLIENTES (GOOGLE REVIEWS - ANEXADAS)
-      ========================================================================= */}
-      <section id="avaliacoes" className="py-20 lg:py-28 bg-[#F5EFEB] relative border-y border-[#DFB76C]/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
-          {/* Header da Seção de Avaliações */}
           <div className="text-center max-w-3xl mx-auto mb-14 space-y-3">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-[#DFB76C]/40 text-xs font-semibold text-[#7E5F20] shadow-sm">
-              <GoogleIcon className="w-4 h-4" />
-              <span>Avaliações Reais no Google</span>
-            </div>
-            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#181B20]">
-              O que Dizem Nossos Clientes
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold uppercase tracking-wide text-[#181B20]">
+              O QUE DIZEM OS CLIENTES
             </h2>
             <p className="text-stone-600 text-sm sm:text-base leading-relaxed">
-              Depoimentos reais e verificados de quem confiou sua causa e liberdade ao Dr. Jean Bruno.
+              Depoimentos reais de quem confiou sua causa e liberdade ao Dr. Jean Bruno.
             </p>
 
             {/* Google Rating Badge */}
-            <div className="pt-3 inline-flex items-center gap-3 px-5 py-2.5 rounded-2xl bg-white border border-[#DFB76C]/40 shadow-sm">
+            <div className="pt-2 inline-flex items-center gap-3 px-5 py-2 rounded-2xl bg-white border border-[#DFB76C]/40 shadow-sm">
               <div className="flex items-center gap-1 text-amber-500">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-5 h-5 fill-amber-400 text-amber-400" />
+                  <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
                 ))}
               </div>
-              <span className="font-serif font-bold text-stone-900 text-base">5.0 / 5.0</span>
+              <span className="font-serif font-bold text-stone-900 text-sm">5.0 / 5.0</span>
               <span className="text-xs text-stone-500 border-l border-stone-300 pl-3">
-                Excelente no Google
+                Google Avaliações
               </span>
             </div>
           </div>
 
-          {/* Grid de Avaliações (4 cards reais dos anexos) */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {clientReviews.map((rev, index) => (
               <div
                 key={index}
-                className="p-6 sm:p-7 rounded-3xl bg-white border border-[#DFB76C]/30 hover:border-[#C5A059] shadow-md hover:shadow-lg transition-all duration-300 flex flex-col justify-between"
+                className="p-7 rounded-3xl bg-white border border-[#DFB76C]/30 shadow-md hover:shadow-lg transition-all duration-300 flex flex-col justify-between"
               >
                 <div>
-                  {/* Top Bar do Review (Google Style) */}
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-3">
-                      {/* Avatar */}
                       <div
-                        className={`w-11 h-11 rounded-full ${rev.avatarColor} text-white font-bold flex items-center justify-center text-base shadow-sm shrink-0`}
+                        className={`w-11 h-11 rounded-full ${rev.color} text-white font-bold flex items-center justify-center text-base shadow-sm shrink-0`}
                       >
-                        {rev.avatarInitial}
+                        {rev.initial}
                       </div>
                       <div>
                         <div className="flex items-center gap-1.5">
-                          <h4 className="font-semibold text-stone-900 text-sm sm:text-base">
+                          <h4 className="font-semibold text-stone-900 text-base">
                             {rev.name}
                           </h4>
                           <GoogleIcon className="w-3.5 h-3.5 shrink-0" />
                         </div>
-                        <p className="text-[11px] text-stone-500 font-light">
-                          {rev.details} • <span className="text-stone-400">{rev.time}</span>
+                        <p className="text-xs text-stone-500 font-light">
+                          {rev.role}
                         </p>
                       </div>
                     </div>
@@ -1002,16 +783,14 @@ export default function Home() {
                     <Quote className="w-6 h-6 text-[#DFB76C]/40" />
                   </div>
 
-                  {/* Estrelas */}
                   <div className="flex items-center gap-1 mb-3">
-                    {[...Array(rev.rating)].map((_, i) => (
+                    {[...Array(5)].map((_, i) => (
                       <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
                     ))}
                   </div>
 
-                  {/* Texto do Depoimento */}
                   <p className="text-stone-700 text-sm sm:text-base leading-relaxed italic font-light">
-                    &ldquo;{rev.text}&rdquo;
+                    &ldquo;{rev.quote}&rdquo;
                   </p>
                 </div>
 
@@ -1025,11 +804,7 @@ export default function Home() {
             ))}
           </div>
 
-          {/* CTA após depoimentos */}
           <div className="mt-12 text-center">
-            <p className="text-sm text-stone-600 mb-4">
-              Precisa de um atendimento humanizado, transparente e dedicado à sua causa?
-            </p>
             <a
               href={`https://wa.me/${mainWhatsAppNumber}?text=${defaultWaMessage}`}
               target="_blank"
@@ -1045,178 +820,42 @@ export default function Home() {
       </section>
 
       {/* =========================================================================
-          DIFERENCIAIS & PILARES DO ESCRITÓRIO
+          7. LOCALIZAÇÃO / VISITE-NOS (ENDEREÇO & HORÁRIOS)
       ========================================================================= */}
-      <section id="diferenciais" className="py-20 lg:py-28 relative bg-sand-pattern">
+      <section className="py-20 lg:py-28 relative bg-sand-pattern">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-[#DFB76C]/40 text-xs font-semibold text-[#7E5F20] shadow-sm">
-              <Shield className="w-3.5 h-3.5 text-[#C5A059]" />
-              <span>Nossos Pilares</span>
-            </div>
-            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#181B20]">
-              Por que Confiar Sua Causa ao Dr. Jean Bruno
-            </h2>
-            <p className="text-stone-600 text-sm sm:text-base">
-              Princípios inegociáveis que orientam cada atendimento, peça processual e defesa em audiência.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             
-            <div className="p-6 rounded-3xl glass-card-light glass-card-light-hover border border-[#DFB76C]/30 shadow-sm">
-              <div className="w-12 h-12 rounded-xl bg-[#FAF4E6] border border-[#DFB76C]/40 text-[#A98239] flex items-center justify-center mb-5 font-bold">
-                <Clock className="w-6 h-6" />
-              </div>
-              <h3 className="font-serif text-lg font-bold text-[#181B20] mb-2">Pronto Atendimento</h3>
-              <p className="text-xs sm:text-sm text-stone-600 font-light leading-relaxed">
-                Resposta rápida para situações emergenciais como prisões em flagrante, apreensões e cumprimento de mandados judiciais.
-              </p>
-            </div>
-
-            <div className="p-6 rounded-3xl glass-card-light glass-card-light-hover border border-[#DFB76C]/30 shadow-sm">
-              <div className="w-12 h-12 rounded-xl bg-[#FAF4E6] border border-[#DFB76C]/40 text-[#A98239] flex items-center justify-center mb-5 font-bold">
-                <Users className="w-6 h-6" />
-              </div>
-              <h3 className="font-serif text-lg font-bold text-[#181B20] mb-2">Atendimento Humanizado</h3>
-              <p className="text-xs sm:text-sm text-stone-600 font-light leading-relaxed">
-                Você conversa diretamente com o advogado responsável pelo seu processo, sem intermediários ou burocracias.
-              </p>
-            </div>
-
-            <div className="p-6 rounded-3xl glass-card-light glass-card-light-hover border border-[#DFB76C]/30 shadow-sm">
-              <div className="w-12 h-12 rounded-xl bg-[#FAF4E6] border border-[#DFB76C]/40 text-[#A98239] flex items-center justify-center mb-5 font-bold">
-                <Gavel className="w-6 h-6" />
-              </div>
-              <h3 className="font-serif text-lg font-bold text-[#181B20] mb-2">Defesa Combativa</h3>
-              <p className="text-xs sm:text-sm text-stone-600 font-light leading-relaxed">
-                Análise minuciosa de nulidades, laudos periciais e depoimentos para construir teses sólidas perante juízes e jurados.
-              </p>
-            </div>
-
-            <div className="p-6 rounded-3xl glass-card-light glass-card-light-hover border border-[#DFB76C]/30 shadow-sm">
-              <div className="w-12 h-12 rounded-xl bg-[#FAF4E6] border border-[#DFB76C]/40 text-[#A98239] flex items-center justify-center mb-5 font-bold">
-                <Shield className="w-6 h-6" />
-              </div>
-              <h3 className="font-serif text-lg font-bold text-[#181B20] mb-2">Sigilo & Transparência</h3>
-              <p className="text-xs sm:text-sm text-stone-600 font-light leading-relaxed">
-                Sigilo profissional absoluto resguardado pelo Estatuto da OAB, com relatórios constantes sobre o andamento da ação.
-              </p>
-            </div>
-
-          </div>
-
-        </div>
-      </section>
-
-      {/* =========================================================================
-          COMO FUNCIONA O ATENDIMENTO (PASSO A PASSO)
-      ========================================================================= */}
-      <section id="como-funciona" className="py-20 bg-[#F5EFEB] border-y border-[#DFB76C]/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
-          <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-[#DFB76C]/40 text-xs font-semibold text-[#7E5F20] shadow-sm">
-              <CheckCircle2 className="w-3.5 h-3.5 text-[#C5A059]" />
-              <span>Fluxo Transparente</span>
-            </div>
-            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#181B20]">
-              Como Funciona o Seu Atendimento
-            </h2>
-            <p className="text-stone-600 text-sm sm:text-base">
-              Etapas simples e organizadas para dar início à sua representação jurídica.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
-            
-            {/* Passo 1 */}
-            <div className="flex flex-col items-center text-center space-y-3">
-              <div className="w-16 h-16 rounded-full gold-btn-gradient text-white font-serif font-black text-2xl flex items-center justify-center shadow-md">
-                1
-              </div>
-              <h3 className="font-serif font-bold text-lg text-[#181B20]">Primeiro Contato</h3>
-              <p className="text-xs text-stone-600 font-light leading-relaxed">
-                Você nos aciona via WhatsApp ou ligação telefônica relatando resumidamente a situação.
-              </p>
-            </div>
-
-            {/* Passo 2 */}
-            <div className="flex flex-col items-center text-center space-y-3">
-              <div className="w-16 h-16 rounded-full bg-white border-2 border-[#DFB76C] text-[#A98239] font-serif font-black text-2xl flex items-center justify-center shadow-md">
-                2
-              </div>
-              <h3 className="font-serif font-bold text-lg text-[#181B20]">Diagnóstico Técnico</h3>
-              <p className="text-xs text-stone-600 font-light leading-relaxed">
-                Análise documental, consulta processual no sistema e avaliação preliminar das medidas cabíveis.
-              </p>
-            </div>
-
-            {/* Passo 3 */}
-            <div className="flex flex-col items-center text-center space-y-3">
-              <div className="w-16 h-16 rounded-full bg-white border-2 border-[#DFB76C] text-[#A98239] font-serif font-black text-2xl flex items-center justify-center shadow-md">
-                3
-              </div>
-              <h3 className="font-serif font-bold text-lg text-[#181B20]">Estratégia de Defesa</h3>
-              <p className="text-xs text-stone-600 font-light leading-relaxed">
-                Definição das teses jurídicas, elaboração de peças ou comparecimento presencial imediato.
-              </p>
-            </div>
-
-            {/* Passo 4 */}
-            <div className="flex flex-col items-center text-center space-y-3">
-              <div className="w-16 h-16 rounded-full gold-btn-gradient text-white font-serif font-black text-2xl flex items-center justify-center shadow-md">
-                4
-              </div>
-              <h3 className="font-serif font-bold text-lg text-[#181B20]">Acompanhamento Ativo</h3>
-              <p className="text-xs text-stone-600 font-light leading-relaxed">
-                Atuação contínua em audiências, julgamentos e recursos com comunicação constante ao cliente.
-              </p>
-            </div>
-
-          </div>
-
-        </div>
-      </section>
-
-      {/* =========================================================================
-          LOCALIZAÇÃO & CONTATO / FORMULÁRIO DE ATENDIMENTO
-      ========================================================================= */}
-      <section id="localizacao" className="py-20 lg:py-28 relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-            
-            {/* DADOS DE CONTATO & ENDEREÇO (COL 1-6) */}
+            {/* INFORMAÇÕES DE LOCALIZAÇÃO (COL 1-6) */}
             <div className="lg:col-span-6 space-y-6">
               
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-[#DFB76C]/40 text-xs font-semibold text-[#7E5F20] shadow-sm">
                 <MapPin className="w-3.5 h-3.5 text-[#C5A059]" />
-                <span>Onde Estamos</span>
+                <span>Localização</span>
               </div>
 
               <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#181B20]">
-                Escritório em Manaus
+                Visite-nos
               </h2>
 
               <p className="text-stone-600 text-sm sm:text-base leading-relaxed font-light">
-                Estrutura preparada para receber você com total privacidade e conforto, além de suporte para atendimento em todo o estado do Amazonas.
+                Estrutura preparada para receber você com total privacidade e conforto, além de suporte presencial e online em todo o Amazonas.
               </p>
 
-              {/* Endereço Detalhado */}
-              <div className="space-y-4">
+              <div className="space-y-4 pt-2">
+                {/* Endereço */}
                 <div className="p-5 rounded-2xl bg-white border border-[#DFB76C]/30 shadow-sm flex items-start gap-4">
                   <div className="w-11 h-11 rounded-xl bg-[#FAF4E6] text-[#A98239] border border-[#DFB76C]/40 flex items-center justify-center shrink-0">
                     <MapPin className="w-6 h-6" />
                   </div>
                   <div>
-                    <h4 className="font-serif font-bold text-[#181B20] text-base">Endereço Presencial</h4>
-                    <p className="text-sm text-stone-700 mt-1">
+                    <h4 className="font-serif font-bold text-[#181B20] text-base">Endereço</h4>
+                    <p className="text-sm text-stone-700 mt-1 font-medium">
                       Rua Francisco José Furtado, nº 7, Bairro São Francisco
                     </p>
                     <p className="text-xs text-stone-500">
-                      Manaus - AM, Brasil • CEP: 69079-200
+                      Manaus - AM, 69079-200
                     </p>
                     <a
                       href="https://maps.google.com/?q=Rua+Francisco+Jos%C3%A9+Furtado+7+Sao+Francisco+Manaus+AM"
@@ -1224,130 +863,78 @@ export default function Home() {
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#A98239] hover:underline mt-2"
                     >
-                      <span>Abrir no Google Maps / Waze</span>
+                      <span>Abrir no Google Maps</span>
                       <ExternalLink className="w-3.5 h-3.5" />
                     </a>
                   </div>
                 </div>
 
-                {/* Telefones Clicáveis */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <a
-                    href="tel:5592992127414"
-                    className="p-4 rounded-2xl bg-white border border-[#DFB76C]/30 hover:border-[#C5A059] flex items-center gap-3.5 transition-all shadow-sm group"
-                  >
-                    <div className="w-10 h-10 rounded-xl bg-[#FAF4E6] text-[#A98239] border border-[#DFB76C]/30 flex items-center justify-center shrink-0 group-hover:scale-105">
-                      <PhoneCall className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <span className="text-[11px] text-stone-400 uppercase font-semibold">Telefone / WhatsApp</span>
-                      <p className="text-sm font-bold text-[#181B20]">(92) 99212-7414</p>
-                    </div>
-                  </a>
-
-                  <a
-                    href="tel:5592984083042"
-                    className="p-4 rounded-2xl bg-white border border-[#DFB76C]/30 hover:border-[#C5A059] flex items-center gap-3.5 transition-all shadow-sm group"
-                  >
-                    <div className="w-10 h-10 rounded-xl bg-[#FAF4E6] text-[#A98239] border border-[#DFB76C]/30 flex items-center justify-center shrink-0 group-hover:scale-105">
-                      <PhoneCall className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <span className="text-[11px] text-stone-400 uppercase font-semibold">Telefone Adicional</span>
-                      <p className="text-sm font-bold text-[#181B20]">(92) 98408-3042</p>
-                    </div>
-                  </a>
+                {/* Telefone */}
+                <div className="p-5 rounded-2xl bg-white border border-[#DFB76C]/30 shadow-sm flex items-start gap-4">
+                  <div className="w-11 h-11 rounded-xl bg-[#FAF4E6] text-[#A98239] border border-[#DFB76C]/40 flex items-center justify-center shrink-0">
+                    <PhoneCall className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <h4 className="font-serif font-bold text-[#181B20] text-base">Telefone & WhatsApp</h4>
+                    <p className="text-sm font-bold text-[#181B20] mt-1">
+                      (92) 99212-7414 / (92) 98408-3042
+                    </p>
+                    <p className="text-xs text-stone-500">Atendimento 24 horas para urgências</p>
+                  </div>
                 </div>
 
-                {/* Instagram Banner */}
-                <a
-                  href="https://instagram.com/imjeanbruno"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-4 rounded-2xl bg-white border border-[#DFB76C]/30 hover:border-[#C5A059] flex items-center justify-between transition-all shadow-sm"
-                >
-                  <div className="flex items-center gap-3.5">
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-rose-500 text-white flex items-center justify-center shadow-sm">
-                      <InstagramIcon className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <span className="text-[11px] text-stone-400 uppercase font-semibold">Instagram Oficial</span>
-                      <p className="text-sm font-bold text-[#181B20]">@imjeanbruno</p>
-                    </div>
+                {/* Horário de Atendimento */}
+                <div className="p-5 rounded-2xl bg-white border border-[#DFB76C]/30 shadow-sm flex items-start gap-4">
+                  <div className="w-11 h-11 rounded-xl bg-[#FAF4E6] text-[#A98239] border border-[#DFB76C]/40 flex items-center justify-center shrink-0">
+                    <Clock className="w-6 h-6" />
                   </div>
-                  <span className="text-xs font-semibold text-[#A98239]">Seguir &rarr;</span>
-                </a>
+                  <div>
+                    <h4 className="font-serif font-bold text-[#181B20] text-base">Horário de Atendimento</h4>
+                    <p className="text-sm text-stone-700 mt-1">
+                      Seg - Sex: 09:00 - 18:00
+                    </p>
+                    <p className="text-xs text-[#A98239] font-semibold mt-0.5">
+                      Plantão Criminal 24h para prisões e audiências de custódia
+                    </p>
+                  </div>
+                </div>
               </div>
 
             </div>
 
-            {/* FORMULÁRIO DE CONTATO DIRETO PARA WHATSAPP (COL 7-12) */}
+            {/* FOTO DO ESCRITÓRIO & VISUAL MAPA (COL 7-12) */}
             <div className="lg:col-span-6">
-              <div className="p-7 sm:p-8 rounded-3xl bg-white border border-[#DFB76C]/40 shadow-xl relative">
-                <div className="mb-6 space-y-1">
-                  <h3 className="font-serif text-2xl font-bold text-[#181B20]">Envie Sua Mensagem Direta</h3>
-                  <p className="text-xs sm:text-sm text-stone-600">
-                    Preencha os campos abaixo para iniciar o atendimento no WhatsApp com o Dr. Jean Bruno.
-                  </p>
+              <div className="relative rounded-3xl p-3 bg-white border border-[#DFB76C]/40 shadow-xl overflow-hidden group">
+                <div className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-stone-100">
+                  <Image
+                    src="/escritorio2.webp"
+                    alt="Sala de Atendimento do Dr. Jean Bruno em Manaus"
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 600px"
+                    className="object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80" />
+                  
+                  <div className="absolute bottom-4 left-4 right-4 p-4 rounded-xl bg-white/95 backdrop-blur-md border border-[#DFB76C]/40 shadow-md">
+                    <h4 className="font-serif font-bold text-[#181B20] text-sm sm:text-base">
+                      Atendimento Presencial em Manaus
+                    </h4>
+                    <p className="text-xs text-stone-500 mt-0.5">
+                      Rua Francisco José Furtado, nº 7, Bairro São Francisco
+                    </p>
+                    <div className="mt-3 flex items-center gap-3">
+                      <a
+                        href="https://maps.google.com/?q=Rua+Francisco+Jos%C3%A9+Furtado+7+Sao+Francisco+Manaus+AM"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#FAF4E6] text-[#7E5F20] text-xs font-bold border border-[#DFB76C]/30 hover:bg-[#C5A059] hover:text-white transition-colors"
+                      >
+                        <MapPin className="w-3.5 h-3.5" />
+                        <span>Ver Rota no GPS</span>
+                      </a>
+                    </div>
+                  </div>
                 </div>
-
-                <form onSubmit={handleCustomFormSubmit} className="space-y-4">
-                  <div>
-                    <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1.5">
-                      Seu Nome Completo
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={contactName}
-                      onChange={(e) => setContactName(e.target.value)}
-                      placeholder="Ex: João da Silva"
-                      className="w-full px-4 py-3 rounded-xl bg-[#FAF8F5] border border-stone-300 text-[#181B20] placeholder:text-stone-400 text-sm focus:outline-none focus:border-[#C5A059] transition-colors"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1.5">
-                      Assunto Principal
-                    </label>
-                    <select
-                      value={contactSubject}
-                      onChange={(e) => setContactSubject(e.target.value)}
-                      className="w-full px-4 py-3 rounded-xl bg-[#FAF8F5] border border-stone-300 text-[#181B20] text-sm focus:outline-none focus:border-[#C5A059] transition-colors"
-                    >
-                      <option value="Direito Criminal / Urgência">Direito Criminal / Prisão / Flagrante</option>
-                      <option value="Tribunal do Júri">Tribunal do Júri</option>
-                      <option value="Execução Penal / Progressão de Regime">Execução Penal / Progressão de Regime</option>
-                      <option value="Audiência de Custódia">Audiência de Custódia</option>
-                      <option value="Direito Cível">Direito Cível (Ações / Contratos)</option>
-                      <option value="Consultoria Preventiva">Consultoria Jurídica / Outros</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1.5">
-                      Como podemos te ajudar? (Breve resumo)
-                    </label>
-                    <textarea
-                      rows={3}
-                      value={contactMessage}
-                      onChange={(e) => setContactMessage(e.target.value)}
-                      placeholder="Descreva brevemente a sua dúvida ou necessidade..."
-                      className="w-full px-4 py-3 rounded-xl bg-[#FAF8F5] border border-stone-300 text-[#181B20] placeholder:text-stone-400 text-sm focus:outline-none focus:border-[#C5A059] transition-colors"
-                    ></textarea>
-                  </div>
-
-                  <button
-                    type="submit"
-                    className="w-full flex items-center justify-center gap-2.5 py-4 rounded-xl font-bold text-sm uppercase tracking-wider gold-btn-gradient text-white shadow-md hover:scale-[1.01] active:scale-[0.99] transition-all"
-                  >
-                    <MessageCircle className="w-5 h-5 fill-current" />
-                    <span>Iniciar Atendimento no WhatsApp</span>
-                  </button>
-                  <p className="text-[11px] text-stone-500 text-center">
-                    🔒 Seus dados são protegidos por sigilo profissional da advocacia.
-                  </p>
-                </form>
               </div>
             </div>
 
@@ -1357,150 +944,181 @@ export default function Home() {
       </section>
 
       {/* =========================================================================
-          FAQ / PERGUNTAS FREQUENTES
+          8. FORMULÁRIO DE CONTATO DIRETO (ESTILO EXATO DO SITE DE REFERÊNCIA)
+          "Advocacia especializada para proteger seus direitos"
+          Nome, Sobrenome, E-mail, Telefone, Mensagem -> Botão Enviar Mensagem
       ========================================================================= */}
-      <section id="faq" className="py-20 bg-[#F5EFEB] border-t border-[#DFB76C]/30">
+      <section id="contato" className="py-20 lg:py-28 bg-[#F5EFEB] border-t border-[#DFB76C]/30 relative">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          <div className="text-center mb-14 space-y-3">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-[#DFB76C]/40 text-xs font-semibold text-[#7E5F20] shadow-sm">
-              <FileText className="w-3.5 h-3.5 text-[#C5A059]" />
-              <span>Dúvidas Comuns</span>
-            </div>
-            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#181B20]">
-              Perguntas Frequentes
+          <div className="text-center mb-12 space-y-3">
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#181B20]">
+              Advocacia especializada para proteger seus direitos
             </h2>
-            <p className="text-stone-600 text-sm">
-              Esclarecimentos essenciais sobre atuação penal e procedimentos jurídicos.
+            <p className="text-stone-600 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
+              Preencha o formulário abaixo para entrar em contato com nossos especialistas. Retornaremos o mais breve possível.
             </p>
           </div>
 
-          <div className="space-y-4">
-            {faqs.map((faq, index) => {
-              const isOpen = openFaq === index;
-              return (
-                <div
-                  key={index}
-                  className="rounded-2xl bg-white border border-[#DFB76C]/30 overflow-hidden shadow-sm transition-colors"
-                >
-                  <button
-                    onClick={() => setOpenFaq(isOpen ? null : index)}
-                    className="w-full flex items-center justify-between p-5 text-left font-serif font-bold text-base sm:text-lg text-[#181B20] hover:text-[#A98239] transition-colors"
-                  >
-                    <span>{faq.question}</span>
-                    <ChevronDown
-                      className={`w-5 h-5 text-[#A98239] shrink-0 transition-transform duration-300 ${
-                        isOpen ? "rotate-180" : ""
-                      }`}
-                    />
-                  </button>
-
-                  {isOpen && (
-                    <div className="px-5 pb-5 text-xs sm:text-sm text-stone-600 font-light leading-relaxed border-t border-stone-100 pt-4 animate-in fade-in duration-200">
-                      {faq.answer}
-                    </div>
-                  )}
+          {/* CARD DO FORMULÁRIO */}
+          <div className="p-8 sm:p-10 rounded-3xl bg-white border border-[#DFB76C]/40 shadow-xl relative">
+            <form onSubmit={handleFormSubmit} className="space-y-6">
+              
+              {/* NOME & SOBRENOME */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-xs font-bold text-stone-800 uppercase tracking-wider mb-2">
+                    Nome <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    placeholder="Seu primeiro nome"
+                    className="w-full px-4 py-3.5 rounded-xl bg-[#FAF8F5] border border-stone-300 text-[#181B20] placeholder:text-stone-400 text-sm focus:outline-none focus:border-[#C5A059] transition-colors"
+                  />
                 </div>
-              );
-            })}
+
+                <div>
+                  <label className="block text-xs font-bold text-stone-800 uppercase tracking-wider mb-2">
+                    Sobrenome <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    placeholder="Seu sobrenome"
+                    className="w-full px-4 py-3.5 rounded-xl bg-[#FAF8F5] border border-stone-300 text-[#181B20] placeholder:text-stone-400 text-sm focus:outline-none focus:border-[#C5A059] transition-colors"
+                  />
+                </div>
+              </div>
+
+              {/* E-MAIL & TELEFONE */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-xs font-bold text-stone-800 uppercase tracking-wider mb-2">
+                    E-mail <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="exemplo@email.com"
+                    className="w-full px-4 py-3.5 rounded-xl bg-[#FAF8F5] border border-stone-300 text-[#181B20] placeholder:text-stone-400 text-sm focus:outline-none focus:border-[#C5A059] transition-colors"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-stone-800 uppercase tracking-wider mb-2">
+                    Telefone <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="tel"
+                    required
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="(92) 99999-9999"
+                    className="w-full px-4 py-3.5 rounded-xl bg-[#FAF8F5] border border-stone-300 text-[#181B20] placeholder:text-stone-400 text-sm focus:outline-none focus:border-[#C5A059] transition-colors"
+                  />
+                </div>
+              </div>
+
+              {/* MENSAGEM */}
+              <div>
+                <label className="block text-xs font-bold text-stone-800 uppercase tracking-wider mb-2">
+                  Mensagem <span className="text-red-500">*</span>
+                </label>
+                <textarea
+                  rows={4}
+                  required
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  placeholder="Descreva brevemente como podemos ajudar..."
+                  className="w-full px-4 py-3.5 rounded-xl bg-[#FAF8F5] border border-stone-300 text-[#181B20] placeholder:text-stone-400 text-sm focus:outline-none focus:border-[#C5A059] transition-colors"
+                ></textarea>
+              </div>
+
+              {/* BOTÃO ENVIAR MENSAGEM */}
+              <div>
+                <button
+                  type="submit"
+                  className="w-full flex items-center justify-center gap-2.5 py-4 rounded-xl font-bold text-sm uppercase tracking-wider gold-btn-gradient text-white shadow-lg hover:scale-[1.01] active:scale-[0.99] transition-all"
+                >
+                  <Send className="w-4 h-4" />
+                  <span>Enviar Mensagem</span>
+                </button>
+              </div>
+
+              <p className="text-[11px] text-stone-500 text-center">
+                🔒 Suas informações são estritamente confidenciais e protegidas pelo sigilo profissional da advocacia.
+              </p>
+            </form>
           </div>
 
         </div>
       </section>
 
       {/* =========================================================================
-          FOOTER (MINIMALISTA E ELEGANTE)
+          9. FOOTER (ESTILO REVOREDO & ASSOCIADOS)
       ========================================================================= */}
       <footer className="bg-[#FAF8F5] border-t border-[#DFB76C]/30 pt-16 pb-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-stone-200">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-10 border-b border-stone-200 text-center md:text-left">
             
-            {/* Coluna 1: Logo & Bio */}
-            <div className="space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full overflow-hidden bg-white border border-[#DFB76C] p-0.5 shadow-sm">
+            {/* BRANDING & OAB */}
+            <div className="space-y-1.5">
+              <div className="flex items-center justify-center md:justify-start gap-3">
+                <div className="w-10 h-10 rounded-full overflow-hidden bg-white border border-[#DFB76C] p-0.5 shadow-sm">
                   <Image
                     src="/logo.webp"
                     alt="Logo Dr. Jean Bruno"
-                    width={48}
-                    height={48}
+                    width={40}
+                    height={40}
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <div>
-                  <span className="font-serif font-bold text-lg text-[#181B20] block">Dr. Jean Bruno</span>
-                  <span className="text-[10px] uppercase tracking-wider text-[#A98239] font-bold">
-                    OAB/AM 17.710
-                  </span>
-                </div>
+                <span className="font-serif font-bold text-lg text-[#181B20]">
+                  Dr. Jean Bruno & Associados
+                </span>
               </div>
-              <p className="text-xs text-stone-600 leading-relaxed font-light">
-                Advocacia combativa, humanizada e estratégica com foco em Direito Criminal, Tribunal do Júri, Execução Penal e Direito Cível em Manaus/AM.
+              <p className="text-xs text-stone-500">
+                Inscrição OAB/AM nº 17.710 • Advocacia Criminal e Cível
               </p>
             </div>
 
-            {/* Coluna 2: Navegação Rápida */}
-            <div className="space-y-3">
-              <h4 className="font-serif font-bold text-sm text-[#7E5F20] uppercase tracking-wider">
-                Navegação
-              </h4>
-              <ul className="space-y-2 text-xs text-stone-600">
-                {navLinks.map((link) => (
-                  <li key={link.name}>
-                    <a href={link.href} className="hover:text-[#A98239] transition-colors">
-                      {link.name}
-                    </a>
-                  </li>
-                ))}
-              </ul>
+            {/* LINKS DO MENU NO FOOTER */}
+            <div className="flex flex-wrap items-center justify-center gap-6 text-xs font-semibold text-stone-700">
+              <a href="#sobre" className="hover:text-[#A98239] transition-colors">
+                Sobre
+              </a>
+              <a href="#areas-de-atuacao" className="hover:text-[#A98239] transition-colors">
+                Áreas de Atuação
+              </a>
+              <a href="#contato" className="hover:text-[#A98239] transition-colors">
+                Contato
+              </a>
+              <a href="#contato" className="hover:text-[#A98239] transition-colors">
+                Política de Privacidade
+              </a>
             </div>
 
-            {/* Coluna 3: Especialidades */}
-            <div className="space-y-3">
-              <h4 className="font-serif font-bold text-sm text-[#7E5F20] uppercase tracking-wider">
-                Especialidades
-              </h4>
-              <ul className="space-y-2 text-xs text-stone-600">
-                <li>Tribunal do Júri</li>
-                <li>Execução Penal & Progressão</li>
-                <li>Prisão em Flagrante & Custódia</li>
-                <li>Habeas Corpus & Recursos</li>
-                <li>Direito Cível Estratégico</li>
-              </ul>
-            </div>
-
-            {/* Coluna 4: Contato & Redes */}
-            <div className="space-y-3">
-              <h4 className="font-serif font-bold text-sm text-[#7E5F20] uppercase tracking-wider">
-                Plantão & Contato
-              </h4>
-              <div className="space-y-2 text-xs text-stone-600">
-                <p>📲 (92) 99212-7414</p>
-                <p>📲 (92) 98408-3042</p>
-                <p>📍 Rua Francisco José Furtado, nº 7, São Francisco, Manaus/AM</p>
-                <a
-                  href="https://instagram.com/imjeanbruno"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-[#A98239] font-medium hover:underline pt-1"
-                >
-                  <InstagramIcon className="w-4 h-4" />
-                  <span>@imjeanbruno</span>
-                </a>
-              </div>
+            {/* CONTATOS */}
+            <div className="text-center md:text-right text-xs text-stone-600 space-y-1">
+              <p className="font-bold text-[#181B20] text-sm">+55 (92) 99212-7414</p>
+              <p>Rua Francisco José Furtado, nº 7, São Francisco, Manaus/AM</p>
             </div>
 
           </div>
 
-          {/* Rodapé Ético OAB e Copyright */}
+          {/* COPYRIGHT & ÉTICA OAB */}
           <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left text-[11px] text-stone-500">
-            <div>
-              <p>© {new Date().getFullYear()} Dr. Jean Bruno - Advocacia. Todos os direitos reservados.</p>
-              <p className="mt-1">Inscrito na Ordem dos Advogados do Brasil, Seccional Amazonas: OAB/AM 17.710.</p>
-            </div>
-            <p className="text-[10px] text-stone-400 max-w-sm text-center sm:text-right">
-              Este site tem caráter meramente informativo e respeita integralmente as diretrizes do Código de Ética e Disciplina da OAB.
+            <p>© {new Date().getFullYear()}. Dr. Jean Bruno & Associados. Todos os direitos reservados.</p>
+            <p className="text-[10px] text-stone-400">
+              Em estrita conformidade com o Código de Ética e Disciplina da OAB.
             </p>
           </div>
 
@@ -1512,7 +1130,7 @@ export default function Home() {
       ========================================================================= */}
       <aside aria-label="Atendimento Rápido" className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-2">
         <div className="hidden sm:block bg-white border border-[#DFB76C]/60 text-[#7E5F20] text-xs font-semibold px-3.5 py-1.5 rounded-full shadow-lg">
-          Plantão Online • Fale Conosco
+          Fale com o Advogado no WhatsApp
         </div>
         
         <a
